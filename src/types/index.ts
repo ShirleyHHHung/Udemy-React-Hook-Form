@@ -1,0 +1,19 @@
+export type selectOptionType = { value: string | number; text: string };
+
+export type CheckoutFormType = {
+  paymentMethod: string;
+  deliveryIn: number;
+};
+
+export type FoodDeliveryFormType = {
+  orderNo: number;
+  customerName: string;
+  mobile: string;
+  email: string;
+  address: {
+    streetAddress: string;
+    landmark: string;
+    city: string;
+    state: string;
+  };
+} & CheckoutFormType;

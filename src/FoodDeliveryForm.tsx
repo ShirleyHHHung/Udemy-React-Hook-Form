@@ -1,29 +1,40 @@
 import { useState, type ChangeEvent, type SyntheticEvent } from "react";
-import { useForm, type FieldErrors } from "react-hook-form";
+import {
+  FormProvider,
+  useForm,
+  type FieldErrors,
+  type UseFormReturn,
+} from "react-hook-form";
 import TextField from "./controls/TextField";
-
-type FoodDeliveryFormType = {
-  orderNo: number;
-  customerName: string;
-  mobile: string;
-  email: string;
-};
+import CheckoutForm from "./CheckoutForm";
+import { type FoodDeliveryFormType } from "./types/index";
 
 const FoodDeliveryForm = () => {
+  const methed: UseFormReturn<FoodDeliveryFormType> =
+    useForm<FoodDeliveryFormType>({
+      defaultValues: {
+        orderNo: new Date().valueOf(),
+        customerName: "",
+        mobile: "",
+        email: "",
+        paymentMethod: "",
+        deliveryIn: 0,
+        address: {
+          streetAddress: "",
+          landmark: "",
+          city: "",
+          state: "",
+        },
+      },
+      mode: "onChange",
+      criteriaMode: "all",
+    });
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FoodDeliveryFormType>({
-    defaultValues: {
-      orderNo: new Date().valueOf(),
-      customerName: "",
-      mobile: "",
-      email: "",
-    },
-    mode: "onChange",
-    criteriaMode: "all",
-  });
+  } = methed;
 
   const onSubmit = (formData: FoodDeliveryFormType) => {
     console.log("formData", formData);
@@ -87,6 +98,49 @@ const FoodDeliveryForm = () => {
           />
         </div>
       </div>
+      <div>list of ordered food items</div>
+      <FormProvider {...methed}>
+        <CheckoutForm />
+      </FormProvider>
+      <div className="text-start fw-bold mt-4 mb-2">Delivery Address</div>
+      <div className="row mb-3">
+        <div className="col">
+          <TextField
+            label="Street Address"
+            {...register("address.streetAddress", {
+              required: "此欄位必填",
+            })}
+            error={errors.address?.streetAddress}
+          />
+        </div>
+        <div className="col">
+          <TextField
+            label="City"
+            {...register("address.city", {
+              required: "此欄位必填",
+            })}
+            error={errors.address?.city}
+          />
+        </div>
+      </div>
+      <div className="row mb-3">
+        <div className="col">
+          <TextField
+            label="Landmark"
+            {...register("address.landmark")}
+            error={errors.address?.landmark}
+          />
+        </div>
+        <div className="col">
+          <TextField
+            label="State"
+            {...register("address.state")}
+            error={errors.address?.state}
+          />
+        </div>
+      </div>
+      <div>check out details</div>
+      <div>delivery address</div>
 
       <button type="submit" className="btn btn-primary">
         submit
