@@ -1,7 +1,7 @@
 import { useFormContext } from "react-hook-form";
-import Select from "./controls/Select";
-import { type selectOptionType } from "./types";
-import { type CheckoutFormType } from "./types/index";
+import { type selectOptionType } from "../../../types";
+import { type CheckoutFormType } from "../../../types/index";
+import Select from "../../../controls/Select";
 
 const paymentOptions: selectOptionType[] = [
   { value: "", text: "select" },
